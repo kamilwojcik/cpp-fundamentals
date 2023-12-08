@@ -21,7 +21,4 @@ ErrorCode checkPasswordRules(std::string pass);
 
 ErrorCode checkPassword(std::string passA, std::string passB);
 
-bool hasMinimumLength(std::string pass);
-bool hasNumber(std::string pass);
-bool hasSpecialCharacter(std::string pass);
-bool hasUppercaseLetter(std::string pass);
+bool has_any_of(const std::string& pass, const std::string& required);

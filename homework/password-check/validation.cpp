@@ -21,41 +21,24 @@ bool hasMinimumLength(std::string pass) {
     return pass.size() >= 9;
 }
 
-bool hasNumber(std::string pass) {
-    std::string required_chars = "0123456789";
-    return std::any_of(required_chars.begin(), required_chars.end(), [&pass](auto char_of_required) {
-        return std::any_of(pass.begin(), pass.end(), [char_of_required](auto char_of_pass) {
-            return char_of_required == char_of_pass;
-        });
-    });
+bool has_any_of(const std::string& pass, const std::string& required )
+{
+    return pass.end() != find_first_of(pass.begin(), pass.end(), required.begin(), required.end());
 }
 
-bool hasSpecialCharacter(std::string pass) {
-    std::string required_chars = "~!@#$%^&*()?><.,/;;";
-    return std::any_of(required_chars.begin(), required_chars.end(), [&pass](auto char_of_required) {
-        return std::any_of(pass.begin(), pass.end(), [char_of_required](auto char_of_pass) {
-            return char_of_required == char_of_pass;
-        });
-    });
-}
-
-bool hasUppercaseLetter(std::string pass) {
-    std::string required_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    return std::any_of(required_chars.begin(), required_chars.end(), [&pass](auto char_of_required) {
-        return std::any_of(pass.begin(), pass.end(), [char_of_required](auto char_of_pass) {
-            return char_of_required == char_of_pass;
-        });
-    });
-}
 
 ErrorCode checkPasswordRules(std::string pass) {
+    std::string digits = "0123456789";
+    std::string specials = "~!@#$%^&*()?><.,/;;";
+    std::string capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     if (!hasMinimumLength(pass))
         return PasswordNeedsAtLeastNineCharacters;
-    else if (!hasNumber(pass))
+    else if (!has_any_of(pass, digits))
         return PasswordNeedsAtLeastOneNumber;
-    else if (!hasSpecialCharacter(pass))
+    else if (!has_any_of(pass, specials))
         return PasswordNeedsAtLeastOneSpecialCharacter;
-    else if (!hasUppercaseLetter(pass))
+    else if (!has_any_of(pass, capitals))
         return PasswordNeedsAtLeastOneUppercaseLetter;
     return Ok;
 }
